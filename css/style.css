@@ -1177,3 +1177,6 @@ textarea:focus {
         line-height: 30px;
     }
 }
+#preloader {
+    display: none !important;
+}
