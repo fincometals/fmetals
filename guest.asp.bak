@@ -1,0 +1,81 @@
+
+<%
+
+Dim objDBConn2, objRs2
+Dim strSQL
+ dim strFNam, strLNam, strCoNam, strAcd, strPnum, strEml, strDesc, strButton, strClock, strUtime
+
+strFNam=request.form("FNam")
+strLNam=request.form("LNam")
+strCoNam=request.form("CoNam")
+strAcd=request.form("Acd")
+strPNum=request.form("Pnum")
+strEml=request.form("Eml")
+strDesc=request.form("Desc")
+strButton=request.form("button")
+strClock=now()
+
+
+
+
+
+strCoNam = Replace(strCoNam, "'", "''")
+strDesc = Replace(strDesc, "'", "''")
+strSQL = "Insert Into Guest (Fnam, Lnam, conam, acd, Pnum, EML, Comments, RED, Utime) values ('"&strFnam&"','"&strLnam&"','"&strConam&"','"&strACD&"','"&strPNum&"','"&strEML&"','"&strDesc&"','no','"&strClock&"')"
+
+
+
+
+
+Dim connectstr2
+Dim db_name, db_username, db_userpassword
+Dim db_server
+dim db_pic
+
+db_server = "jwk124.db.7626218.hostedresource.com"
+db_name = "jwk124"
+db_username = "jwk124"
+db_userpassword = "Mon1tor!"
+
+
+connectstr2 = "Driver={SQL Server};SERVER=" & db_server & ";DATABASE=" & db_name & ";UID=" & db_username & ";PWD=" & db_userpassword
+
+
+
+
+
+Set objDBConn2 = Server.CreateObject("ADODB.Connection")
+  Set objRs2 = Server.CreateObject("ADODB.RecordSet")
+objDBConn2.Open connectstr2
+
+
+
+
+
+
+objDBConn2.execute strSQL
+strUtime=strClock
+objDBConn2.Close
+Set objDBConn2 = Nothing
+
+if strbutton="No files to upload" then
+
+%>
+<script language="javascript">
+<!--
+alert("Information saved someone will be in contact with you shortly...");
+location.href="index.html";
+//-->
+</script> 
+
+<%else%>
+
+<script language="javascript">
+<!--
+alert("Information saved, please proceed to upload your files...");
+location.href="uploadtester5.asp?utim=<%=strClock%>";
+//-->
+</script> 
+
+<%end if %>
+

@@ -1,0 +1,1069 @@
+
+ <% Option Explicit 
+On Error Resume next
+%>   
+<html>   
+<head>   
+<title>FINCO ADMIN PANEL</title>   
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"><style type="text/css">
+<!--
+body {
+	background-image: url(http://www.fincometals.com/watches/gearb.jpg);
+}
+.style8 {
+	color: #FFFF00;
+	font-family: "Calisto MT";
+	font-weight: bold;
+}
+.style14 {
+	font-family: Impact;
+	font-size: 60px;
+}
+.style15 {color: #0000FF}
+.style16 {color: #FF0000}
+.style19 {font-size: 18px}
+.style21 {
+	font-family: "Calisto MT";
+	color: #990033;
+}
+.style23 {color: #009900}
+.style28 {color: #FF0000; font-weight: bold; }
+.style31 {font-size: 36px}
+.style32 {font-size: 36}
+.style33 {color: #660000}
+.style35 {color: #000066}
+.style36 {color: #000033; font-weight: bold; }
+.style37 {color: #660000; font-weight: bold; }
+.style38 {color: #660000; font-family: Impact; }
+.style39 {color: #000033}
+.style40 {color: #000000}
+.style42 {font-weight: bold}
+.style43 {font-family: "Calisto MT"}
+.style45 {color: #FFFF00; }
+.style46 {
+	font-size: 16px;
+	color: #000000;
+}
+-->
+</style>
+<script language=javascript>
+document.onkeydown = function(){
+
+if(window.event && window.event.keyCode == 116)
+        { // Capture and remap F5
+    window.event.keyCode = 505;
+      }
+
+if(window.event && window.event.keyCode == 505)
+        { // New action for F5
+    return false;
+        // Must return false or the browser will refresh anyway
+    }
+}
+
+</script>
+
+</head>   
+<body>   
+<div align="center" class="style14 style21 style43 style31">Finco Central Command Center</div>
+<div align="center">
+  <p>
+    <%   
+Dim connectstr
+Dim db_name, db_username, db_userpassword
+Dim db_server
+dim db_pic, strtyp
+dim strPASS, strpass2, strpassM, strCAS, strDate, strE
+
+
+
+strDate = now()
+
+strCAS=request.form("Cas")
+
+strpassM=request.form("pass2")
+
+
+strpass=Request.Querystring ("pass")
+
+strpass2="99999"
+
+
+If strpass="" Then
+
+strpass=strpassm
+
+Else
+
+strpassm=strpass
+
+End if
+
+
+
+if strpass <> strpass2 AND strpassM <> strpass2  then
+
+%>
+Your log in information is incorrect.  Are you sure you belong here?
+
+<%
+Else
+
+
+db_server = "jwk124.db.7626218.hostedresource.com"
+db_name = "jwk124"
+db_username = "jwk124"
+db_userpassword = "Mon1tor!"
+fieldname = "RecNo"
+tablename = "InvDb"
+connectstr = "Driver={SQL Server};SERVER=" & db_server & ";DATABASE=" & db_name & ";UID=" & db_username & ";PWD=" & db_userpassword
+
+
+
+
+Dim Conn,strSQL,objRec, strmodel, strFDone, strDone
+Set Conn = Server.Createobject("ADODB.Connection")   
+Conn.Open connectstr
+
+If strCas="ALL" Then
+
+strSQL = "SELECT * FROM MEMDB Where Status='OPEN' AND CR='YES' ORDER BY CC, Cam, CNam ASC "
+
+End If
+
+If strCas<>"" AND strCAS<>"ALL" then
+
+strSQL ="SELECT * FROM MEMDB Where CNam='"&strCas&"' AND Status='OPEN' AND CR='YES' ORDER BY CC, Cam, CNam ASC "
+
+Else
+
+strSQL="SELECT * FROM MEMDB Where Status='OPEN' AND CR='YES' ORDER BY CC, Cam, CNam ASC "
+
+End if
+
+strFdone=request.form("FDone")
+strDone=request.form("done")
+
+If strDone="done" then
+Dim Conn45,strSQL45,objRec45
+Set Conn45 = Server.Createobject("ADODB.Connection")   
+Conn45.Open connectstr
+strSQL45="UPDATE files SET Red='no' WHERE filenam='"&strFdone&"'"
+conn45.execute strSQL45
+
+conn45.close
+set conn45=nothing
+end if
+
+
+Set objRec = Server.CreateObject("ADODB.Recordset")   
+objRec.Open strSQL, Conn, 1,3   
+  
+If objRec.EOF Then  
+Response.write (" No current jobs.") %>
+<p></p>
+<a href="jobupdater3.asp?pass=<%=strpass2%>" target="_self" class="style19 style15">(ALL JOBS)</a>
+<a href="jobupdater.asp?pass=<%=strpass2%>" target="_self" class="style19 style15">(OPEN JOBS)  </a>
+ <a href="jobupdater2.asp?pass=<%=strpass2%>" target="_self" class="style19 style16">  (CLOSED JOBS)</a>
+
+
+
+<%
+Else  
+  
+
+Dim strTimDone, strTimRecNo, strSQL90, strRep, strRN, strOldInst, StrB, strSQL66, strIN, strNeow
+
+strNeow=now()
+
+StrB=request.form("button")
+strOldInst=request.form("oldinst")
+strRN=request.form("RN")
+strRep=request.form("Rep")
+
+strTimRecNo=request.form("timrecno")
+
+strTimDone=request.form("TimDone")
+
+If strTimDone="Mark Complete" Then
+
+strSQL90 = "UPDATE MemDB SET Tim='done' where RecNo='"&strTimRecno&"'" 
+
+Conn.Execute strSQL90
+
+
+End If 
+
+If strB="reply" Then
+
+strIN=strOldInst&"<BR>"&strRep&"*"&strNeow
+
+strIN=Replace(strIN,"'","''")
+
+
+strSQL66 = "UPDATE MemDB SET TimInst='"&strIN&"', TimMes='no' where RecNo='"&strRN&"'"
+Conn.Execute strSQL66
+End If
+
+
+
+Dim PageLen,PageNo,TotalRecord,TotalPage,No,intID   
+PageLen = 50
+PageNo = Request.QueryString("Page") 
+
+if PageNo = "" Then PageNo = 1   
+TotalRecord = objRec.RecordCount   
+objRec.PageSize = PageLen   
+TotalPage = objRec.PageCount   
+objRec.AbsolutePage = PageNo   
+%>   
+    
+    
+    
+    <%   
+No=1 
+Dim I
+i=0
+
+
+Dim strAJ
+
+strAJ=request.form("AJ")
+
+
+if strAJ="Add Job" Then
+
+%>
+</p><a name="open" class="style42 style35"></a>
+ <p class="style14 style23 style43 style31">Add a Job</p>
+ 
+<table align="center" width="980" border="1" bgcolor="#666666">
+    <tr>
+      
+               
+              
+    <td align="center" width="100"><strong>Customer</strong></td>
+     <td align="center" width="75"><strong>Job Name <span class="style16 style33">(required)</span></strong></td>
+    <td align="center" width="25"><strong>Order Date</strong></td>
+    <td align="center" width="25"><strong>Due Date</strong></td>
+  </tr>
+  <form action="registerok.asp?Pass=<%=strpass2%>" method="post" target="_self">
+  
+  <tr>
+ 
+    <td width="100" align="center"><div align="center"><input type="text" width="500" name="Cnamnew" value=""/>
+     
+     
+
+<%Dim Conn3,strSQL3,objRec3, newchk
+Set Conn3 = Server.Createobject("ADODB.Connection")   
+Conn3.Open connectstr
+
+
+strSQL3 = "SELECT DISTINCT CNAM FROM MEMDB"
+
+Set objRec3 = Server.CreateObject("ADODB.Recordset")   
+objRec3.Open strSQL3, Conn3, 1,3
+
+%>
+
+<select name="Cnam" selected value="">
+
+                 <option value="NEW"> New Customer </option>
+				 <%Do While Not objRec3.EOF%>
+				 
+				 
+				 <option value="<%=objRec3.Fields("CNam").Value%>"> <%=objRec3.Fields("CNam").Value%> </option>
+		
+          
+ 
+ 
+ <%objRec3.MoveNext   
+Loop 
+
+objRec3.Close()   
+Conn3.Close()   
+Set objRec3 = Nothing  
+Set Conn3 = Nothing
+
+
+
+
+%>
+	</select> </div></td>        
+    <td width="100" align="center"><div align="center"><input type="hidden" width="50" name="Jnum" value=""/><input type="text" width="500" name="JNam" value=""/></div></td>
+    
+    
+    <td align="center" width="25"><div align="center"><input type="text" width="25" name="ODate" value="<%=strDate%>"/></div></td>
+    <td align="center" width="25"><div align="center"><input type="text" width="25" name="DDate" value=""/></div></td>
+</tr>
+
+
+<tr>
+ <td align="center" width="15"><strong>Finger Size</strong></td>
+    <td align="center" width="25"><strong>Metal Type</strong></td>
+	  <td align="center" width="100"><strong>Stone Information</strong></td>
+    <td align="center" width="100"><strong>Instructions</strong></td>
+</tr>
+<tr>    <td align="center" width="15"><div align="center"><input type="text" width="15" name="FSize" value=""/></div></td>
+    <td align="center" width="25"><div align="center"><input type="text" width="25" name="MType" value=""/></div></td>
+	<td align="center" width="100"><div align="center">
+            <input type="text" width="50" name="SInfo" value=""/>
+          </div></td>
+    <td align="center" width="200"><div align="center"><input type="text" width="500" name="Comments" value=""/><input type="submit" value="ADD" /></div></td>
+    </tr>
+  </form>
+</table>
+
+<%
+
+Else
+
+
+End If
+
+Dim Conn2,strSQL2,objRec2
+Set Conn2 = Server.Createobject("ADODB.Connection")   
+Conn2.Open connectstr
+
+
+strSQL2 = "SELECT DISTINCT CNAM FROM MEMDB"
+
+Set objRec2 = Server.CreateObject("ADODB.Recordset")   
+objRec2.Open strSQL2, Conn2, 1,3
+
+
+
+  
+ 
+
+%>
+
+
+<table>
+<form action="jobupdater.asp?pass=<%=strpass%>" method="post" target="_self">
+
+<tr>
+<td>Search By Customer:</td>
+<td><select name="CAS" selected value="<%Response.write(strCAS)%>">
+
+                 <option value="ALL"> Show All </option>
+				 <%Do While Not objRec2.EOF%>
+				 
+				 
+				 <option value="<%=objRec2.Fields("CNam").Value%>"> <%=objRec2.Fields("CNam").Value%> </option>
+			
+          
+
+
+
+<%
+objRec2.MoveNext   
+Loop 
+
+
+
+
+%>
+
+     </td>
+<td><input type="submit" value="GO"></td>
+
+</tr>
+ </select>
+</form>
+
+<%Dim Conn92,strSQL92,objRec92
+Set Conn92 = Server.Createobject("ADODB.Connection")   
+Conn92.Open connectstr
+
+
+strSQL92 = "SELECT * FROM FMEMDB ORDER BY CoNam"
+
+Set objRec92 = Server.CreateObject("ADODB.Recordset")   
+objRec92.Open strSQL92, Conn92, 1,3
+
+
+
+  
+ 
+
+%>
+
+
+
+<form action="login2.asp" method="post" target="_blank">
+
+<tr>
+<td>Registerd Customers:</td>
+<td><select name="UName" selected value="">
+
+                 <option value=""> Please select </option>
+				 <%Do While Not objRec92.EOF%>
+				 
+				 
+				 <option value="<%=objRec92.Fields("EML").Value%>"> <%=objRec92.Fields("CoNam").Value%> </option>
+			
+          
+
+
+
+
+
+
+
+<%
+objRec92.MoveNext   
+Loop 
+
+
+%>
+
+
+
+
+
+</td>
+
+
+<td><input type="submit" name="button" value="Board"></form></td>
+<%
+objRec92.Close()   
+Conn92.Close()   
+Set objRec92 = Nothing  
+Set Conn92 = Nothing 
+%>
+</select>
+</tr>
+</table>
+<span class="style33">
+<%
+
+
+
+objRec2.Close()   
+Conn2.Close()   
+Set objRec2 = Nothing  
+Set Conn2 = Nothing 
+
+
+Dim Conn5,strSQL5,objRec5,reccount
+Set Conn5 = Server.Createobject("ADODB.Connection")   
+Conn5.Open connectstr
+
+
+strSQL5 = "SELECT * FROM FmemDb WHERE Approved='NO'"
+
+Set objRec5 = Server.CreateObject("ADODB.Recordset")   
+objRec5.Open strSQL5, Conn5, 1,3
+
+
+reccount=objRec5.RecordCount%>
+
+
+<%If reccount > 0 Then %>
+
+<%=reccount&" new account(s) waiting for approval"%><br>
+</span>
+<table border=1 bgcolor="#666666">
+<tr>
+<TD>Name</td>
+<TD>Company</td>
+<TD>Phone Number</td>
+<TD>Email</td>
+<TD></td>
+</tr>
+
+ <% Do Until objrec5.EOF%>
+<tr><form action="approve.asp" method="post" target="_self">
+<TD><%=objRec5.Fields("FNam").Value%>&nbsp;&nbsp;<%=objRec5.Fields("Lnam").Value%></td>
+<TD><input type="text" name="company" value="<%=objRec5.Fields("Conam").Value%>"></td>
+<TD><%=objRec5.Fields("Acd").Value%>-  <%=objRec5.Fields("Phn").Value%></td>
+<td><a href="mailto:<%=objRec5.Fields("Eml").Value%>"><%=objRec5.Fields("Eml").Value%></a></td>
+
+
+
+<TD><input type="hidden" name="rec" value="<%=objRec5.Fields("recno").Value%>"><input type="submit" value="approved"></td>
+</form>
+</tr>
+
+
+  
+ <% objRec5.MoveNext   
+Loop %>
+</table>
+
+<%
+  
+  objRec5.Close()   
+Conn5.Close()   
+Set objRec5 = Nothing  
+Set Conn5 = Nothing 
+
+
+Else
+
+End if
+
+%>
+<%
+
+Dim Conn8,strSQL8,objRec8
+Set Conn8 = Server.Createobject("ADODB.Connection")   
+Conn8.Open connectstr
+
+
+strSQL8 = "SELECT * FROM MEMDB where Status='OPEN' AND CR='NO'"
+
+Set objRec8 = Server.CreateObject("ADODB.Recordset")   
+objRec8.Open strSQL8, Conn8, 1,3
+Dim strPenCnt
+
+strPenCnt=objrec8.RecordCount
+If objrec8.EOF Then
+
+
+
+else
+
+%>
+
+
+<div align="center" class="style14 style20 style35">
+  <p class="style37 style31 style33"><span class="style40"><%=strPenCnt%> <span class="style43">Pending Job(s)</span></span> <span class="style33 style43">(not yet accepted)</span></p>
+</div>
+<table width="980" border="1" align="center" bgcolor="#666666">
+    <tr align="center">
+      
+               <td align="center" width="40"><strong>Job #</a></strong></td>
+			   <td align="center" width="40"><strong>Customer</a></strong></td>
+              
+    
+ <td align="center" width="60"><strong>Order Date</strong></td>
+ <td align="center" width="75"><strong>Job Name</strong></td>
+   
+     <td align="center" width="60"><strong>Due Date</strong></td>
+   
+    <td align="center" width="50"><strong>Size #</strong></td>
+    <td align="center" width="50"><div><strong>Metal </strong></div></td>
+  </tr>
+
+<% Do While Not objRec8.EOF
+
+%>
+  <tr width="980">
+            
+            <form id="user" action="approvepending.asp" method="post" target="_self"><input type="hidden" name="recno" value="<%=objRec8.Fields("RecNo").Value%>">
+
+
+<td width="40" align="center"><div align="center" class="style31"><strong><a name="<%=objRec8.Fields("RecNo").Value%>"><%=objRec8.Fields("RecNo").Value%></a></strong></div></td>
+
+
+
+	  
+
+
+<td align="center" width="60"><div align="center"><strong><%=objRec8.Fields("Cnam").Value%></strong></div></td>
+        <td align="center" width="60"><div align="center"><strong><%=objRec8.Fields("ODate").Value%></strong></div></td>
+		<td align="center" width="75"><div align="center"><strong><%=objRec8.Fields("JNam").Value%></strong></span></div></td>
+    <%
+	DD=objRec8.Fields("DDate").Value
+	
+	IF DD="Jan  1 1900 12:00AM" then%>
+
+	<td align="center" width="60"><div align="center"><strong>n/a</strong></div></td>
+
+	<%else%>
+    <td align="center" width="60"><div align="center"class="style19 style16"><strong><%=objRec8.Fields("DDate").Value%></strong></div></td>
+    <%End if%>
+    <td align="center" width="50"><div align="center"><strong><%=objRec8.Fields("FSize").Value%></strong></div></td>
+    <td align="center" width="50"><div align="center"><strong><%=objRec8.Fields("MType").Value%></strong></div></td>
+   
+    
+     
+ </tr>
+
+<tr>
+
+ <td align="center" width="40"><strong>Stone info</strong></td>
+  <td align="center"colspan="6"><div align="center" class="style28 style32 style40" ><%=objRec8.Fields("Sinfo").Value%></div></td> 
+ </tr>
+
+ <tr>
+ <td align="center" width="40"><strong>Instructions:</strong></td>   
+ <td align="center" colspan="6"><div align="center" class="style28 style19 style40"><%=objRec8.Fields("Instructions").Value%></div></td> 
+	 </tr>
+<tr><td align="left" colspan="3">Instructions for designer:<input type="text" name="TimInst"></textarea><input type="submit" value="TIM"name="button"><input type="submit" name="button" value="approve"><input type="submit" value="cancel"name="button"></td>
+<%
+Dim Conn6,strSQL6,objRec6, curjob, curfile
+Set Conn6 = Server.Createobject("ADODB.Connection")   
+
+curjob=objRec8.Fields("RecNo").Value
+Conn6.Open connectstr
+
+
+strSQL6 = "SELECT filenam from Uploads where job='"&curjob&"'"
+
+Set objRec6 = Server.CreateObject("ADODB.Recordset")   
+objRec6.Open strSQL6, Conn6, 1,3
+
+If objRec6.EOF Then
+%>
+<TD><%Response.write ("No images uploaded....")%></td>
+
+<%
+Else
+
+
+
+Do While Not objRec6.EOF
+
+curfile=objRec6.Fields("filenam").Value
+%>
+
+
+<TD align="center">
+
+<a href="./uploads/<%=curfile%>" target="_blank" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('Image2','','./uploads/<%=curfile%>',1)"><img name="Image2" border="0" height="60" width="80" src="./uploads/<%=curfile%>"></a></td>
+
+<%objRec6.MoveNext   
+Loop 
+objRec6.Close()   
+Conn6.Close()   
+Set objRec6 = Nothing  
+Set Conn6 = Nothing 
+
+End if%>
+</tr>
+</form>
+       
+</div>
+
+
+
+
+
+<% 
+
+objRec8.MoveNext   
+Loop 
+objRec8.Close()   
+Conn8.Close()   
+Set objRec8 = Nothing  
+Set Conn8 = Nothing 
+
+End if
+%>
+</table>
+
+ <%Dim Conn889,strSQL889,objRec889
+Set Conn889 = Server.Createobject("ADODB.Connection")   
+Conn889.Open connectstr
+
+strSQL889 = "SELECT * FROM Guest Where Red='no'"
+
+Set objRec889 = Server.CreateObject("ADODB.Recordset")   
+objRec889.Open strSQL889, Conn889, 1,3   
+
+if objRec889.EOF then%>
+<a href="inquiry.asp?pass=<%=strpass2%>" target="_self" >No new inquiries</a>
+<%else%>
+<a href="inquiry.asp?pass=<%=strpass2%>" target="_self" class="style33 style14">You have a new inquiry</a>
+
+<%end if
+
+
+
+
+objRec889.Close()   
+
+
+
+
+
+Conn889.Close()   
+Set objRec889 = Nothing  
+Set Conn889 = Nothing  %>
+<p>
+  <%Dim Conn88,strSQL88,objRec88, strTimDon
+Set Conn88 = Server.Createobject("ADODB.Connection")   
+Conn88.Open connectstr
+
+strSQL88 = "SELECT * FROM MEMDB Where Status='OPEN' AND CR='YES' AND Tim='Tim'"
+
+Set objRec88 = Server.CreateObject("ADODB.Recordset")   
+objRec88.Open strSQL88, Conn88, 1,3   %>
+  
+</p>
+<table>
+  <tr>
+  <% If objRec88.EOF Then %>
+<td>
+<div align="center" class="style14 style20 style35"><p class="style37 style39 style43 style46">0 Job(s) with Elves</div></td><td><div align="center" class="style14 style20 style35">
+  <p class="style37 style43 style19 style40">0 Recent Upload(s)
+</div></td></tr>
+<tr><td>
+<table width="600"align="center" border="0"><tr>
+<td></td>
+	<td></td>
+		<td></td>
+			<td></td>
+			<td></td>
+
+</tr>
+<%Else
+%>
+<td>
+<div align="center" class="style14 style20 style35"><p class="style37 style31 style43">Jobs with Elves</div></td><td><div align="center" class="style14 style20 style35"><p class="style37 style31 style43">Recent Uploads</div></td></tr>
+<tr><td>
+<table width="600"align="center" border="1"><tr>
+<td><strong>Job #</strong></td>
+	<td><strong>Job Name</strong></td>
+		<td><strong>Order Date</strong></td>
+			<td><strong>Customer</strong></td>
+			<td></td>
+
+</tr>
+
+<% End if
+Do While Not objRec88.EOF
+
+strTimDon=objRec88.Fields("TimDone").Value
+%>
+  
+  
+  <tr>
+    
+    
+  <td><span class="style16 style39"><%=objRec88.Fields("Recno").Value%></span></td>
+    <td><span class="style16 style39"><%=objRec88.Fields("Jnam").Value%></span></td>
+    <td><span class="style16 style39"><%=objRec88.Fields("ODate").Value%></span></td>
+    <td><span class="style16 style39"><%=objRec88.Fields("CNam").Value%></span></td>
+  <td><form action="jobupdater.asp?pass=<%=strpass%>" method="post" target="_self" class="style16 style39">
+    <input type="hidden" name="timrecno" value="<%=objRec88.Fields("Recno").Value%>">
+  <%If strTimDon="yes" then%>
+    <input type="submit" name="TimDone" value="Mark Complete">
+    
+    <%Else
+			
+			End if%>
+    </form></tr>
+  <%dim strTM
+			
+			strTM=objRec88.Fields("TimMes").Value
+			
+			if strTM="yes" then
+			%>
+       <tr><td colspan="4"><span class="style16 style39"><%=objRec88.Fields("TimInst").Value%></span></td>
+       <td colspan="4"><form action=jobupdater.asp?pass=<%=strpass%> method="post" target="_self" class="style16 style39">
+       <input type="text" name="rep">
+       <input type="hidden" name="RN" value="<%=objRec88.Fields("RecNo").Value%>">
+       <input type="hidden" name="oldinst" value="<%=objRec88.Fields("TimInst").Value%>">
+       <input type="submit" value="reply" name="button">
+       </form></td>
+  </tr>
+       
+       <%else 
+	   end if
+           objRec88.MoveNext   
+Loop  
+objRec88.Close()   
+
+
+
+
+
+Conn88.Close()   
+Set objRec88 = Nothing  
+Set Conn88 = Nothing  %>
+            </table>
+            
+    </td>
+    <td>
+     
+      <%' start recent uploads
+	 Dim Conn69,strSQL69,objRec69, curfile9
+Set Conn69 = Server.Createobject("ADODB.Connection")   
+
+
+Conn69.Open connectstr
+
+
+strSQL69 = "SELECT filenam from files where Red='yes'"
+
+Set objRec69 = Server.CreateObject("ADODB.Recordset")   
+objRec69.Open strSQL69, Conn69, 1,3
+Do While Not objRec69.EOF
+curfile9=objRec69.Fields("Filenam").Value
+
+%><form action="jobupdater.asp?pass=<%=strpass%>" target="_self" method="post">
+    <div class="style41">   <a href="ftp://Ocean350:Mon1tor!@www.fincometals.com/files/<%=curfile9%>" target="_blank" ><%=curfile9%></a>
+    <input type="hidden" name="FDone" value="<%=curfile9%>">
+    <input type="submit" value="done" name="done">
+    </form>
+    
+    
+    
+    </div>
+
+
+ 
+      <%objRec69.MoveNext   
+Loop 
+objRec69.Close()   
+Conn69.Close()   
+Set objRec69 = Nothing  
+Set Conn69 = Nothing 
+	'end recent uplaods%>   </td>
+  </tr
+    ></table>
+<div align="center" class="style14 style20 style35"><p class="style37 style39 style43 style31">Open Jobs</div>
+<form action=jobupdater.asp#open method=post target="_self">
+  <input type="hidden" name="pass2" value="99999">
+  
+ <%if strAJ="Add Job" then
+ 
+ else%>
+  
+  <input type="submit" name="AJ" value="Add Job">
+  <%end if%>
+ 
+ <input type="submit" name="button" value="REFRESH">
+  </form>
+
+<a href="jobupdater2.asp?pass=<%=strpass2%>" target="_self" class="style19 style33">(CLOSED)  </a><a href="jobupdater3.asp?pass=<%=strpass2%>" target="_self" class="style19 style35">  (ALL JOBS)</a></p>
+
+<%
+
+  
+  Response.write (TotalRecord&" OPEN JOBS")
+
+
+
+
+
+%>   
+  
+  <table width="980" border="1" align="center" bgcolor="#666666">
+    <tr align="center">
+      
+               <td align="center" width="40"><strong>Job #</a></strong></td>
+              
+    <td align="center" width="100"><strong>Customer</strong></td>
+ <td align="center" width="60"><strong>Order Date</strong></td>
+ <td align="center" width="75"><strong>Job Name</strong></td>
+   
+     <td align="center" width="60"><strong>Due Date</strong></td>
+   
+    <td align="center" width="50"><strong>Size #</strong></td>
+    <td align="center" width="50"><div><strong>Metal </strong></div></td>
+    
+    
+    
+   <td align="center" width="40"><strong>CAD</strong></td>
+<td align="center" width="40"><strong>CAM</strong></td>
+<td align="center" width="40"><strong>Action</strong></td>
+  </tr>
+      
+<%
+
+
+Do While Not objRec.EOF and No <= PageLen   
+
+i=i+1
+
+Dim dd
+%>
+    
+    
+     
+        <form action="jobupdate.asp?pass=0000" method="post" target="_self">
+      
+          <tr width="980">
+             <input type="hidden" name="Jnum" value="<%=objRec.Fields("RecNo").Value%>">
+            
+<%dim strchange
+
+strchange=objRec.Fields("change").Value
+
+if strchange="yes" then
+%>
+<td width="40" align="center"><div align="center" class="style19 style16"><strong><a name="<%=objRec.Fields("RecNo").Value%>"><%=objRec.Fields("RecNo").Value%></a><br>*New Info*</strong></div></td>
+
+<%else%>
+  <td width="40" align="center"><div align="center"><strong><a name="<%=objRec.Fields("RecNo").Value%>"><%=objRec.Fields("RecNo").Value%></a></strong></div></td>
+  <%end if%>
+
+
+
+
+	    <td width="100" align="center"><div align="center" class="style15"><strong><a href="details.asp?pass=<%=strpass2%>&reco=<%=objRec.Fields("RecNo").Value%>" target="_self" class=""> <%=objRec.Fields("CNam").Value%></a></strong></div></td>
+
+
+
+        <td align="center" width="60"><div align="center"><strong><%=objRec.Fields("ODate").Value%></strong></div></td>
+		<td align="center" width="75"><div align="center" class="style36"><%=objRec.Fields("JNam").Value%></div></td>
+    <%
+	DD=objRec.Fields("DDate").Value
+	
+	IF DD="Jan  1 1900 12:00AM" then%>
+            
+            <td align="center" width="60"><div align="center"><strong>n/a</strong></div></td>
+            
+            <%else%>
+            <td align="center" width="60"><div align="center"class="style19 style33"><strong><%=objRec.Fields("DDate").Value%></strong></div></td>
+            <%End if%>
+    <td align="center" width="50"><div align="center"><strong><%=objRec.Fields("FSize").Value%></strong></div></td>
+    <td align="center" width="50"><div align="center"><strong><%=objRec.Fields("MType").Value%></strong></div></td>
+   
+    
+    <%dim strChecker1, strChecker2, strChecker3
+	
+	strChecker1=objRec.Fields("Status").Value
+	strChecker2=objRec.Fields("CC").Value
+	strChecker3=objRec.Fields("CAM").value
+	
+	
+	
+    
+    If strChecker2="0PEN" then%>
+	    <td align="center" width="40"><div align="center" class="style36"><%=objRec.Fields("CC").Value%></div></td>
+        
+        <%else %>
+            <td align="center" width="40"><div align="center" class="style28 style33"><%=objRec.Fields("CC").Value%></div></td>
+            <%end if
+      
+      
+       If strChecker3="0PEN" then%>
+<td align="center" width="40"><div align="center" class="style36"><%=objRec.Fields("CAM").Value%></div></td>        
+<% else %>
+		<td align="center" width="40"><div align="center" class="style37"><%=objRec.Fields("CAM").Value%></div></td> 
+        <% end if%>       
+
+    <td>
+	
+	<% 
+	Dim strCheck
+	
+	strCheck=objRec.Fields("CC").Value
+	
+	If strCheck = "0PEN" then
+	%>
+	
+	<input type="submit" value="CAD Complete" name="edit" />
+	<input type="submit" value="Close Job" name="edit" />
+	<strong> <a href="jobupdater.asp?pass=<%=strpass2%>&eno=<%=objRec.Fields("JNam").Value%>#<%=objRec.Fields("RecNo").Value%>" target="_self" class="style19 style33">edit</a></strong>	</td>
+	<% else%>
+  <input type="submit" value="ReOpen CAD" name="edit" />
+  <%if strChecker3="0PEN" then%>
+  <input type="submit" value="Close CAM" name="edit" />
+  <% else%>
+  <input type="submit" value="ReOpen CAM" name="edit" />
+  <%end if%>
+
+	<input type="submit" value="Close Job" name="edit" />
+	<strong> <a href="jobupdater.asp?pass=<%=strpass2%>&eno=<%=objRec.Fields("JNam").Value%>#<%=objRec.Fields("RecNo").Value%>" target="_self" class="style19 style33">edit</a></strong>
+	</td>
+	<%End if%>
+      </tr>
+
+
+
+	  
+      
+	  <%
+	  Dim strENO, strenochk
+streno=Request.Querystring ("eno")
+	  strenochk=objRec.Fields("Jnam").Value
+
+	  If strEno=strenochk then%>
+
+	  <tr>
+     
+	  
+	  <td colspan="2"><div align="right"><span class="style38">New Note</strong>:</span></div></td>
+	  
+	  <td colspan="2"><input type="hidden" name="pcom" value="<%=objRec.Fields("Comments").Value%>"/><input type="text" width="100" name="Comments" value=""/></td>
+      <td><div align="center"><span class="style38">Due Date: </span>
+          <input type="text"  name="DDate" value="<%=objRec.Fields("DDate").Value%>"/>
+      </div></td>
+      <td><div align="center"><span class="style38">Size: </span>
+          <input type="text"  name="Fsize" value="<%=objRec.Fields("FSize").Value%>"/>
+      </div></td>
+      <td><div align="center"><span class="style38">Metal: </span>
+          <input type="text"  name="Mtype" value="<%=objRec.Fields("MType").Value%>"/>
+      </div></td>
+      <td><div align="center"><span class="style38">Stones: </span>
+          <input type="text"  name="Sinfo" value="<%=objRec.Fields("Sinfo").Value%>"/>
+      </div></td>
+      <td colspan="2"><input type="submit" value="Update" name="edit" /><a href="jobupdater.asp?pass=<%=strpass2%>#<%=objRec.Fields("RecNo").Value%>" target="_self" class="style19 style16 style33">cancel:</a></td>
+
+	  <%Else%>
+
+
+	 
+	  
+<%	  End if%>
+	  </tr>
+        </form>
+</div>
+    <%No = No + 1   
+objRec.MoveNext   
+Loop  
+
+
+
+%>  
+</table>
+
+
+
+
+
+</tr> 
+<span class="style25 style35">
+  </table>
+<span class="style35">  Total : <%=TotalRecord%> Jobs.  Page <%=PageNo%> of <%=TotalPage%>   <br>
+<% IF Cint(PageNo) > 1 then %>   
+  <a href="<%=Request.ServerVariables("SCRIPT_NAME")%>?Pass=<%=strpass2%>&Page=1"><< First</a>   <br>
+  <br>
+  <a href="<%=Request.ServerVariables("SCRIPT_NAME")%>?Pass=<%=strpass2%>&Page=<%=PageNo-1%>">< Back</a>   
+  <% End IF%>   
+  <% IF Cint(PageNo) < TotalPage Then %>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="<%=Request.ServerVariables("SCRIPT_NAME")%>?Pass=<%=strpass2%>&Page=<%=PageNo+1%>">Next ></a> </span></span>
+  <form action="jobupdater.asp" method="POST" class="style8 style23 style15 style15 style15 style15 style15">
+
+<input type="hidden" name="typ" value="<%=strTyp%>" />
+
+<span class="style35"><a href="<%=Request.ServerVariables("SCRIPT_NAME")%>?pass=<%=strpass2%>&Page=<%=TotalPage%>&strtyp=<%=strtyp%>">Last >></a>  </span>
+</form>
+  
+  <span class="style8 style23 style35 "><span class="style45">
+  <% End IF%>   
+  <br>   
+Go to   
+  
+  <% For intID = 1 To TotalPage%>   
+  <% if intID = Cint(PageNo) Then%>   
+  <%=intID%>   
+  <%Else%>   
+  <a href="<%=Request.ServerVariables("SCRIPT_NAME")%>?pass=<%=strpass2%>&Page=<%=intID%>"><%=intID%></a>   
+  <%
+  End if%>   
+  <%Next%>   
+  <%   
+End If  
+
+objRec.Close()   
+Conn.Close()   
+Set objRec = Nothing  
+Set Conn = Nothing  
+end If
+
+
+
+%>   
+  </span></span>
+  </div>
+</body>   
+</html>  

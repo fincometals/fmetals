@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Portfolio</title>
+    <link rel="icon" href="img/fav.png" type="image/x-icon">
+
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="ionicons/css/ionicons.min.css" rel="stylesheet">
+
+    <!-- main css -->
+    <link href="css/style.css" rel="stylesheet">
+
+
+    <!-- modernizr -->
+    <script src="js/modernizr.js"></script>
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+
+    <!-- Preloader -->
+    <div id="preloader">
+        <div class="pre-container">
+            <div class="spinner">
+                <div class="double-bounce1"></div>
+                <div class="double-bounce2"></div>
+            </div>
+        </div>
+    </div>
+    <!-- end Preloader -->
+
+    <div class="container-fluid">
+        <!-- box-header -->
+        <header class="box-header">
+            <div class="box-logo">
+                <a href="index.html"><img src="img/logo.png" width="160" alt="Logo"></a>
+            </div>
+            <!-- box-nav -->
+            <a class="box-primary-nav-trigger" href="#0">
+                <span class="box-menu-text">Menu</span><span class="box-menu-icon"></span>
+            </a>
+        </header>
+        <!-- end box-header -->
+
+        <!-- nav -->
+        <nav>
+            <ul class="box-primary-nav">
+                <li class="box-label">About us</li>
+
+                <li><a href="index.html">Intro</a> <i class=""></i>o</li>
+               
+               
+                <li><a href="portfolio.asp">CAD portfolio</a>
+                <li><a href="lportfolio.asp">LIVE portfolio</a>
+                <li><a href="request.html">Request A Quote</a></li>
+                            
+                <li><a href="pay.html">Make a Payment</a></li>
+               
+
+               
+            </ul>
+        </nav>
+        <!-- end nav -->
+    </div>
+
+    <!-- top bar -->
+    <div class="top-bar">
+        <h1>portfolio</h1>
+        <p><a href="index.html">Home</a> / Portfolio</p>
+    </div>
+    <!-- end top bar -->
+
+    <!-- main container -->
+    <div class="main-container portfolio-inner clearfix">
+        <!-- portfolio div -->
+        <div class="portfolio-div">
+            <div class="portfolio">
+                <!-- portfolio_filter -->
+                <div class="categories-grid wow fadeInLeft">
+                    <nav class="categories text-center">
+                        <ul class="portfolio_filter">
+                            <li><a href="" class="active" data-filter="*">All</a></li>
+                            <li><a href="" data-filter=".bridal">Bridal</a></li>
+                            <li><a href="" data-filter=".bands">Bands</a></li>
+                            <li><a href="" data-filter=".fashion">Fashion Jewelry</a></li>
+          
+                        </ul>
+                    </nav>
+                </div>
+                <!-- portfolio_filter -->
+
+                <!-- portfolio_container -->
+                <div class="no-padding portfolio_container clearfix">
+           
+           
+           
+                <!-- fashion jewelry 
+                
+                X = TOTAL FASHION FILES
+                
+                 -->
+                 <%dim x
+				 
+				 for x =1 to 183
+				 
+				 %>
+                 
+                    <div class="col-md-3 col-sm-6  fashion">
+                       
+                       <a href="request.html" class="portfolio_item">
+                            <img src="img/portfolio/fashion/fash (<%response.write(x)%>).jpg" alt="image" class="img-responsive" />
+                            <div class="portfolio_item_hover">
+                                <div class="portfolio-border clearfix">
+                                    <div class="item_info">
+                                        <span></span>
+                                        <em>Request a Quote</em>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>                
+                                               
+                    
+                       
+                      
+                            
+                    </div>
+                    
+                    <%next%>
+                <!-- end fashion jewelry  -->
+
+           
+           
+                    <!-- Bridal
+                    
+                    Y = TOTAL BRIDAL FILES
+                     -->
+                     
+                     <%dim z
+				 
+				 for z =1 to 376
+				 
+				 %> 
+                    <div class="col-md-3 col-sm-6 bridal">
+                         <a href="request.html" class="portfolio_item">
+                            <img src="img/portfolio/bridal/bridal (<%response.write(z)%>).jpg" alt="image" class="img-responsive" />
+                            <div class="portfolio_item_hover">
+                                <div class="portfolio-border clearfix">
+                                    <div class="item_info">
+                                        <span></span>
+                                        <em>Request a Quote</em>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                            
+                            
+                       
+                    </div>
+                    
+                     <%next%>
+                    <!-- end Bridal -->
+
+
+
+                    <!-- Bands
+                    
+                    Z=TOTAL BAND FILES
+                     -->
+                     
+                     <%dim y
+					 
+					 for y = 1 to 43%>
+                    <div class="col-md-3 col-sm-6 bands">
+                       
+                           <a href="request.html" class="portfolio_item">
+                            <img src="img/portfolio/bands/bands (<%response.write(y)%>).jpg" alt="image" class="img-responsive" />
+                            <div class="portfolio_item_hover">
+                                <div class="portfolio-border clearfix">
+                                    <div class="item_info">
+                                        <span></span>
+                                        <em>Request a Quote</em>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                       
+                    </div>
+                    
+                    <%next%>
+                    <!-- end Bands -->
+
+
+              </div>
+                <!-- end portfolio_container -->
+            </div>
+            <!-- portfolio -->
+        </div>
+        <!-- end portfolio div -->
+    </div>
+    <!-- end main container -->
+
+
+    <!-- footer -->
+    <footer>
+        <div class="container-fluid">
+            <p class="copyright">© Finco Metals 2017</p>
+            <p class="copyright">608 S. Hill St Suite 706</p>
+            <p class="copyright">Los Angeles, Ca 90014</p>
+            <p class="copyright">213-283-2324</p>
+      </div>
+</footer>
+    <!-- end footer -->
+
+    <!-- back to top -->
+    <a href="#0" class="cd-top"><i class="ion-android-arrow-up"></i></a>
+    <!-- end back to top -->
+
+
+
+
+    <!-- jQuery -->
+    <script src="js/jquery-2.1.1.js"></script>
+    <!--  plugins -->
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/menu.js"></script>
+    <script src="js/animated-headline.js"></script>
+    <script src="js/isotope.pkgd.min.js"></script>
+
+
+    <!--  custom script -->
+    <script src="js/custom.js"></script>
+    
+    <!-- google analytics  -->
+    <script>
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r;
+            i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date();
+            a = s.createElement(o),
+                m = s.getElementsByTagName(o)[0];
+            a.async = 1;
+            a.src = g;
+            m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+        ga('create', 'UA-76796224-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+</body>
+
+</html>
